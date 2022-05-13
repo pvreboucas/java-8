@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
+
+import static java.util.Comparator.*;
 
 public class OrdenaStrings {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		List<String> palavras = new ArrayList<>();
@@ -12,55 +15,24 @@ public class OrdenaStrings {
 		palavras.add("casa do código");
 		palavras.add("caelum");
 		
-		//classe anônima implementando um default method consumer
-		palavras.forEach(new Consumer<String>() {
-		    public void accept(String s) {
-		        System.out.println(s);
-		    }
-		});
+		//lambdas sem method reference
+		palavras.sort(Comparator.comparing(s -> s.length()));
 		
-		//lambdas enxugando a sintaxe de classes anônimas
-		palavras.forEach((String s) -> {
-		    System.out.println(s);
-		});
-		
-		palavras.forEach((s) -> {
-		    System.out.println(s);
-		});
-		
-		palavras.forEach(s -> {
-		    System.out.println(s);
-		});
+		Function<String, Integer> funcao1 = s -> s.length();
 		
 		palavras.forEach(s -> System.out.println(s));
 		
 		
-		//classe anônima com Comparator
-		palavras.sort(new Comparator<String>() {
-		    public int compare(String s1, String s2) {
-		        if (s1.length() < s2.length())
-		            return -1;
-		        if (s1.length() > s2.length())
-		            return 1;
-		        return 0;
-		    }
-		});
 		
-		//lambda com Comparator
-		palavras.sort((s1, s2) -> {
-		    if (s1.length() < s2.length())
-		        return -1;
-		    if (s1.length() > s2.length())
-		        return 1;
-		    return 0;
-		});
+		//lambdas com method reference
+		palavras.sort(Comparator.comparing(String::length));
 		
-		palavras.sort((s1, s2) -> {
-		    return Integer.compare(s1.length(), s2.length());
-		});
+		//import static do Comparator permite chamar diretamente o método comparing
+		palavras.sort(comparing(String::length));
 		
-		palavras.sort((s1, s2) -> Integer.compare(s1.length(), s2.length()));
+		Function<String, Integer> funcao2 = String::length;
 		
+		palavras.forEach(System.out::println);
 		
 	}
 
